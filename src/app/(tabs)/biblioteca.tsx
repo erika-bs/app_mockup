@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { cores } from '@/constants/cores';
 import { playlists } from '@/data/playlists';
@@ -28,6 +29,16 @@ export default function Biblioteca() {
             </Pressable>
           ))}
         </View>
+
+        <Pressable style={styles.linha} onPress={() => router.push('/curtidas')}>
+          <View style={[styles.capa, styles.curtidas]}>
+            <Ionicons name="heart" size={28} color={cores.texto} />
+          </View>
+          <View style={styles.textos}>
+            <Text style={styles.nome}>Músicas Curtidas</Text>
+            <Text style={styles.sub}>Playlist • 5 músicas</Text>
+          </View>
+        </Pressable>
 
         {filtro === 'Playlists'
           ? playlists.map((p) => (
@@ -64,6 +75,7 @@ const styles = StyleSheet.create({
   chipTextoAtivo: { color: '#000', fontWeight: '700' },
   linha: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
   capa: { width: 64, height: 64, borderRadius: 4, backgroundColor: cores.card },
+  curtidas: { backgroundColor: '#4A2FBD', alignItems: 'center', justifyContent: 'center' },
   redonda: { borderRadius: 32 },
   textos: { marginLeft: 12 },
   nome: { color: cores.texto, fontSize: 16, fontWeight: '600' },
