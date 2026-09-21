@@ -22,6 +22,8 @@ export default function Player() {
 
   const [tocando, setTocando] = useState(true);
   const [curtida, setCurtida] = useState(false);
+  const [aleatorio, setAleatorio] = useState(false);
+  const [repetir, setRepetir] = useState(false);
   const [segundos, setSegundos] = useState(0);
   const total = paraSegundos(musica.duracao);
 
@@ -33,12 +35,22 @@ export default function Player() {
 
   useEffect(() => {
     if (!tocando) return;
-    const timer = setInterval(() => setSegundos((s) => (s < total ? s + 1 : s)), 1000);
+    const timer = setInterval(() => {
+      setSegundos((s) => {
+        if (s < total) return s + 1;
+        return repetir ? 0 : s;
+      });
+    }, 1000);
     return () => clearInterval(timer);
-  }, [tocando, total]);
+  }, [tocando, total, repetir]);
 
   const irPara = (novo: number) => {
-    const alvo = (novo + musicas.length) % musicas.length;
+    let alvo = (novo + musicas.length) % musicas.length;
+    if (aleatorio) {
+      do {
+        alvo = Math.floor(Math.random() * musicas.length);
+      } while (alvo === indice);
+    }
     router.setParams({ id: musicas[alvo].id });
   };
 
@@ -84,7 +96,9 @@ export default function Player() {
         </View>
 
         <View style={styles.controles}>
-          <Ionicons name="shuffle" size={26} color={cores.textoSecundario} />
+          <Pressable onPress={() => setAleatorio(!aleatorio)}>
+            <Ionicons name="shuffle" size={26} color={aleatorio ? cores.verde : cores.textoSecundario} />
+          </Pressable>
           <Pressable onPress={() => irPara(indice - 1)}>
             <Ionicons name="play-skip-back" size={34} color={cores.texto} />
           </Pressable>
@@ -94,7 +108,9 @@ export default function Player() {
           <Pressable onPress={() => irPara(indice + 1)}>
             <Ionicons name="play-skip-forward" size={34} color={cores.texto} />
           </Pressable>
-          <Ionicons name="repeat" size={26} color={cores.textoSecundario} />
+          <Pressable onPress={() => setRepetir(!repetir)}>
+            <Ionicons name="repeat" size={26} color={repetir ? cores.verde : cores.textoSecundario} />
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>
