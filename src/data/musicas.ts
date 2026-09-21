@@ -21,4 +21,9 @@ export const musicas: Musica[] = [
   { id: '8', titulo: 'Kiss Me Until My Lips Fall Off', artista: 'Lebanon Hanover', artistaId: 'a8', album: 'Let Them Be Alien', duracao: '4:20', capa: require('../../assets/images/capas/08.png') },
   { id: '9', titulo: 'Such Small Hands', artista: 'La Dispute', artistaId: 'a9', album: 'Somewhere at the Bottom of the River Between Vega and Altair', duracao: '5:10', capa: require('../../assets/images/capas/09.png') },
   { id: '10', titulo: 'Skylines and Turnstiles', artista: 'My Chemical Romance', artistaId: 'a7', album: 'I Brought You My Bullets, You Brought Me Your Love', duracao: '3:20', capa: require('../../assets/images/capas/10.png') },
+    { id: '11', titulo: 'First Date', artista: 'Blink-182', artistaId: 'a10', album: 'Take Off Your Pants and Jacket', duracao: '2:51', capa: require('../../assets/images/capas/11.png') },
+  { id: '12', titulo: 'A Boy Brushed Red Living in Black and White', artista: 'Underoath', artistaId: 'a11', album: "They're Only Chasing Safety", duracao: '3:19', capa: require('../../assets/images/capas/12.png') },
+  { id: '13', titulo: 'Swing, Swing', artista: 'The All-American Rejects', artistaId: 'a12', album: 'The All-American Rejects', duracao: '3:50', capa: require('../../assets/images/capas/13.png') },
+  { id: '14', titulo: 'Die, Die My Darling', artista: 'Aiden', artistaId: 'a13', album: 'Rain in Hell', duracao: '3:00', capa: require('../../assets/images/capas/14.png') },
+  { id: '15', titulo: 'Ocean Avenue', artista: 'Yellowcard', artistaId: 'a14', album: 'Ocean Avenue', duracao: '3:20', capa: require('../../assets/images/capas/15.png') },
 ];

@@ -17,4 +17,9 @@ export const artistas: Artista[] = [
   { id: 'a7', nome: 'My Chemical Romance', genero: 'Rock alternativo', foto: require('../../assets/images/capas/07.png') },
   { id: 'a8', nome: 'Lebanon Hanover', genero: 'Cold wave', foto: require('../../assets/images/capas/08.png') },
   { id: 'a9', nome: 'La Dispute', genero: 'Post-hardcore', foto: require('../../assets/images/capas/09.png') },
+  { id: 'a10', nome: 'Blink-182', genero: 'Pop punk', foto: require('../../assets/images/capas/11.png') },
+  { id: 'a11', nome: 'Underoath', genero: 'Metalcore / Post-hardcore', foto: require('../../assets/images/capas/12.png') },
+  { id: 'a12', nome: 'The All-American Rejects', genero: 'Pop punk / Rock alternativo', foto: require('../../assets/images/capas/13.png') },
+  { id: 'a13', nome: 'Aiden', genero: 'Post-hardcore', foto: require('../../assets/images/capas/14.png') },
+  { id: 'a14', nome: 'Yellowcard', genero: 'Pop punk', foto: require('../../assets/images/capas/15.png') },
 ];
