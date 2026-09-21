@@ -7,6 +7,13 @@ import { playlists } from '@/data/playlists';
 import { musicas } from '@/data/musicas';
 import CardMusica from '@/components/CardMusica';
 
+const saudacao = () => {
+  const hora = new Date().getHours();
+  if (hora >= 5 && hora < 12) return 'Bom dia';
+  if (hora >= 12 && hora < 18) return 'Boa tarde';
+  return 'Boa noite';
+};
+
 export default function Home() {
   const router = useRouter();
 
@@ -14,7 +21,7 @@ export default function Home() {
     <SafeAreaView style={styles.tela}>
       <ScrollView contentContainerStyle={styles.conteudo}>
         <View style={styles.topo}>
-          <Text style={styles.saudacao}>Boa noite</Text>
+          <Text style={styles.saudacao}>{saudacao()}</Text>
           <Pressable onPress={() => router.push('/perfil')}>
             <Ionicons name="person-circle-outline" size={32} color={cores.texto} />
           </Pressable>
