@@ -63,7 +63,9 @@ export default function Player() {
           <Pressable onPress={() => router.back()}>
             <Ionicons name="chevron-down" size={30} color={cores.texto} />
           </Pressable>
-          <Text style={styles.topoTexto} numberOfLines={1}>{musica.album}</Text>
+          <Pressable style={{ flex: 1 }} onPress={() => router.push(`/album/${musica.id}`)}>
+            <Text style={styles.topoTexto} numberOfLines={1}>{musica.album}</Text>
+        </Pressable>
           <Ionicons name="ellipsis-horizontal" size={24} color={cores.texto} />
         </View>
 
