@@ -1,17 +1,75 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { cores } from '@/constants/cores';
-import { playlists } from '@/data/playlists';
-import { artistas } from '@/data/artistas';
+import { colecoes } from '@/constants/colecoes';
+import { generosParaArtistas } from '@/constants/generosArtistas';
+import { api } from '@/services/api';
+import { comCache } from '@/services/cache';
+import { listarDescobertas } from '@/storage/descobertas';
+import { ResultadoBusca } from '@/types/api';
 
-const filtros = ['Playlists', 'Artistas'] as const;
+const filtros = ['Playlists', 'Artistas', 'Descobertas'] as const;
+
+type ArtistaReal = { artistId: number; nome: string; foto: string | null };
 
 export default function Biblioteca() {
   const router = useRouter();
   const [filtro, setFiltro] = useState<(typeof filtros)[number]>('Playlists');
+  const [descobertas, setDescobertas] = useState<ResultadoBusca[]>([]);
+  const [carregandoDescobertas, setCarregandoDescobertas] = useState(true);
+  const [artistasReais, setArtistasReais] = useState<ArtistaReal[]>([]);
+  const [carregandoArtistas, setCarregandoArtistas] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      carregarDescobertas();
+    }, [])
+  );
+
+  useEffect(() => {
+    carregarArtistas();
+  }, []);
+
+  async function carregarDescobertas() {
+    setCarregandoDescobertas(true);
+    const lista = await listarDescobertas();
+    setDescobertas(lista);
+    setCarregandoDescobertas(false);
+  }
+
+  async function carregarArtistas() {
+    setCarregandoArtistas(true);
+    const resultados = await Promise.allSettled(
+      generosParaArtistas.map((genero) =>
+        comCache(`genero-artistas:${genero}`, () => api.buscarMusicas(genero), 60 * 60_000)
+      )
+    );
+
+    const todasFaixas = resultados.flatMap((r) =>
+      r.status === 'fulfilled' ? r.value.dados.results : []
+    );
+
+    const artistasUnicos = new Map<number, ArtistaReal>();
+    todasFaixas.forEach((m) => {
+      if (!artistasUnicos.has(m.artistId)) {
+        artistasUnicos.set(m.artistId, {
+          artistId: m.artistId,
+          nome: m.artistName,
+          foto: m.artworkUrl100,
+        });
+      }
+    });
+
+    const lista = Array.from(artistasUnicos.values())
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 12);
+
+    setArtistasReais(lista);
+    setCarregandoArtistas(false);
+  }
 
   return (
     <SafeAreaView style={styles.tela}>
@@ -30,35 +88,78 @@ export default function Biblioteca() {
           ))}
         </View>
 
-        <Pressable style={styles.linha} onPress={() => router.push('/curtidas')}>
-          <View style={[styles.capa, styles.curtidas]}>
-            <Ionicons name="heart" size={28} color={cores.texto} />
-          </View>
-          <View style={styles.textos}>
-            <Text style={styles.nome}>Músicas Curtidas</Text>
-            <Text style={styles.sub}>Playlist • 5 músicas</Text>
-          </View>
-        </Pressable>
+        {filtro === 'Playlists' && (
+          <Pressable style={styles.linha} onPress={() => router.push('/curtidas')}>
+            <View style={[styles.capa, styles.curtidas]}>
+              <Ionicons name="heart" size={28} color={cores.texto} />
+            </View>
+            <View style={styles.textos}>
+              <Text style={styles.nome}>Músicas Curtidas</Text>
+              <Text style={styles.sub}>Playlist • 5 músicas</Text>
+            </View>
+          </Pressable>
+        )}
 
-        {filtro === 'Playlists'
-          ? playlists.map((p) => (
-              <Pressable key={p.id} style={styles.linha} onPress={() => router.push(`/playlist/${p.id}`)}>
-                <Image source={p.capa} style={styles.capa} />
-                <View style={styles.textos}>
-                  <Text style={styles.nome}>{p.nome}</Text>
-                  <Text style={styles.sub}>Playlist • {p.faixas.length} músicas</Text>
-                </View>
-              </Pressable>
-            ))
-          : artistas.map((a) => (
-              <Pressable key={a.id} style={styles.linha} onPress={() => router.push(`/artista/${a.id}`)}>
-                <Image source={a.foto} style={[styles.capa, styles.redonda]} />
-                <View style={styles.textos}>
-                  <Text style={styles.nome}>{a.nome}</Text>
-                  <Text style={styles.sub}>Artista</Text>
-                </View>
-              </Pressable>
-            ))}
+        {filtro === 'Playlists' &&
+          colecoes.map((c) => (
+            <Pressable key={c.id} style={styles.linha} onPress={() => router.push(`/playlist/${c.id}`)}>
+              <View style={[styles.capa, { backgroundColor: cores.card, alignItems: 'center', justifyContent: 'center' }]}>
+                <Ionicons name="musical-notes" size={24} color={cores.textoSecundario} />
+              </View>
+              <View style={styles.textos}>
+                <Text style={styles.nome}>{c.titulo}</Text>
+                <Text style={styles.sub}>Playlist • API ({c.termoBusca})</Text>
+              </View>
+            </Pressable>
+          ))}
+
+        {filtro === 'Artistas' && carregandoArtistas && (
+          <Text style={styles.sub}>Carregando artistas...</Text>
+        )}
+
+        {filtro === 'Artistas' &&
+          !carregandoArtistas &&
+          artistasReais.map((a) => (
+            <Pressable
+              key={a.artistId}
+              style={styles.linha}
+              onPress={() => router.push(`/artista/${a.artistId}`)}
+            >
+              {a.foto ? (
+                <Image source={{ uri: a.foto }} style={[styles.capa, styles.redonda]} />
+              ) : (
+                <View style={[styles.capa, styles.redonda, { backgroundColor: cores.card }]} />
+              )}
+              <View style={styles.textos}>
+                <Text style={styles.nome}>{a.nome}</Text>
+                <Text style={styles.sub}>Artista</Text>
+              </View>
+            </Pressable>
+          ))}
+
+        {filtro === 'Descobertas' && !carregandoDescobertas && descobertas.length === 0 && (
+          <View style={styles.vazio}>
+            <Ionicons name="compass-outline" size={40} color={cores.textoSecundario} />
+            <Text style={styles.vazioTexto}>
+              Nada salvo ainda. Busque músicas na aba Buscar e toque no coração pra salvar aqui.
+            </Text>
+          </View>
+        )}
+
+        {filtro === 'Descobertas' &&
+          descobertas.map((item) => (
+            <Pressable
+              key={item.trackId}
+              style={styles.linha}
+              onPress={() => router.push(`/resultado/${item.trackId}`)}
+            >
+              <Image source={{ uri: item.artworkUrl100 }} style={styles.capa} />
+              <View style={styles.textos}>
+                <Text style={styles.nome}>{item.trackName}</Text>
+                <Text style={styles.sub}>{item.artistName}</Text>
+              </View>
+            </Pressable>
+          ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -80,4 +181,6 @@ const styles = StyleSheet.create({
   textos: { marginLeft: 12 },
   nome: { color: cores.texto, fontSize: 16, fontWeight: '600' },
   sub: { color: cores.textoSecundario, fontSize: 13, marginTop: 2 },
+  vazio: { alignItems: 'center', justifyContent: 'center', paddingTop: 40, paddingHorizontal: 24, gap: 10 },
+  vazioTexto: { color: cores.textoSecundario, fontSize: 14, textAlign: 'center' },
 });
