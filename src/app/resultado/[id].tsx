@@ -75,7 +75,11 @@ export default function ResultadoBuscaTela() {
 
       <Text style={styles.nome}>{resultado.trackName}</Text>
       <Text style={styles.artista}>{resultado.artistName}</Text>
-      <Text style={styles.detalhe}>{resultado.collectionName}</Text>
+
+      <TouchableOpacity onPress={() => router.push(`/album/${resultado.collectionId}`)}>
+        <Text style={[styles.detalhe, styles.linkAlbum]}>{resultado.collectionName}</Text>
+      </TouchableOpacity>
+
       <Text style={styles.detalhe}>{resultado.primaryGenreName} · {new Date(resultado.releaseDate).getFullYear()}</Text>
 
       <TouchableOpacity style={styles.botaoSalvar} onPress={alternarSalvar}>
@@ -100,6 +104,7 @@ const styles = StyleSheet.create({
   nome: { color: '#fff', fontSize: 20, fontWeight: '700', textAlign: 'center' },
   artista: { color: '#B3B3B3', fontSize: 15, marginTop: 4 },
   detalhe: { color: '#B3B3B3', fontSize: 13, marginTop: 2 },
+  linkAlbum: { color: '#1DB954', textDecorationLine: 'underline' },
   botaoSalvar: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
     backgroundColor: '#242424', paddingHorizontal: 20, paddingVertical: 10,
@@ -109,5 +114,6 @@ const styles = StyleSheet.create({
   link: { color: '#1DB954', marginTop: 16, fontSize: 13 },
   textoErro: { color: '#B3B3B3', textAlign: 'center' },
   botaoVoltar: { marginTop: 12, backgroundColor: '#1DB954', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20 },
+  textoBotaoTentar: { color: '#000', fontWeight: '700' },
   textoBotaoVoltar: { color: '#000', fontWeight: '700' },
 });
