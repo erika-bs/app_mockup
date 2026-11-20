@@ -14,6 +14,9 @@ export const api = {
   buscarMusicas: (termo: string) =>
     req<RespostaBusca>(`/search?term=${encodeURIComponent(termo)}&entity=song&limit=25`),
 
+  buscarFaixasDoArtista: (artistId: number) =>
+    req<RespostaBusca>(`/lookup?id=${artistId}&entity=song&limit=20`),
+
   buscarPorId: async (trackId: number): Promise<ResultadoBusca | null> => {
     const resposta = await req<RespostaBusca>(`/lookup?id=${trackId}`);
     return resposta.results[0] ?? null;
