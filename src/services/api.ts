@@ -17,6 +17,10 @@ export const api = {
   buscarFaixasDoArtista: (artistId: number) =>
     req<RespostaBusca>(`/lookup?id=${artistId}&entity=song&limit=20`),
 
+
+  buscarFaixasDoAlbum: (collectionId: number) =>
+    req<RespostaBusca>(`/lookup?id=${collectionId}&entity=song&limit=200`),
+
   buscarPorId: async (trackId: number): Promise<ResultadoBusca | null> => {
     const resposta = await req<RespostaBusca>(`/lookup?id=${trackId}`);
     return resposta.results[0] ?? null;
