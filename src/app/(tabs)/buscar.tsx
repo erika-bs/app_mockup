@@ -17,11 +17,13 @@ import { ResultadoBusca } from '@/types/api';
 import { useOnline } from '@/hooks/useOnline';
 import BannerOffline from '@/components/BannerOffline';
 import ItemResultadoBusca from '@/components/ItemResultadoBusca';
+import { useLocalSearchParams } from 'expo-router';
 
 type Estado = 'ocioso' | 'carregando' | 'erro' | 'vazio' | 'sucesso';
 
 export default function Buscar() {
-  const [termo, setTermo] = useState('');
+  const { termo: termoInicial } = useLocalSearchParams<{ termo?: string }>();
+  const [termo, setTermo] = useState(termoInicial ?? '');
   const [estado, setEstado] = useState<Estado>('ocioso');
   const [resultados, setResultados] = useState<ResultadoBusca[]>([]);
   const [mensagemErro, setMensagemErro] = useState('');
@@ -46,6 +48,12 @@ export default function Buscar() {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, [termo]);
+
+  useEffect(() => {
+    if (termoInicial && termoInicial !== termo) {
+      setTermo(termoInicial);
+    }
+}, [termoInicial]);
 
   async function buscar(termoBusca: string) {
     setEstado('carregando');
