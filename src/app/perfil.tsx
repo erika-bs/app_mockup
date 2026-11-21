@@ -8,12 +8,23 @@ import { useAuth } from '@/contexts/AuthContext';
 import { listarDescobertas } from '@/storage/descobertas';
 import { listarHistorico } from '@/storage/historico';
 
-const opcoes = [
-  { texto: 'Conta', icone: 'person-outline' as const },
-  { texto: 'Qualidade do áudio', icone: 'musical-note-outline' as const },
-  { texto: 'Notificações', icone: 'notifications-outline' as const },
-  { texto: 'Privacidade', icone: 'lock-closed-outline' as const },
-  { texto: 'Ajuda', icone: 'help-circle-outline' as const },
+type Opcao = {
+  texto: string;
+  icone:
+    | 'person-outline'
+    | 'musical-note-outline'
+    | 'notifications-outline'
+    | 'lock-closed-outline'
+    | 'help-circle-outline';
+  rota?: '/ajuda';
+};
+
+const opcoes: Opcao[] = [
+  { texto: 'Conta', icone: 'person-outline' },
+  { texto: 'Qualidade do áudio', icone: 'musical-note-outline' },
+  { texto: 'Notificações', icone: 'notifications-outline' },
+  { texto: 'Privacidade', icone: 'lock-closed-outline' },
+  { texto: 'Ajuda', icone: 'help-circle-outline', rota: '/ajuda' },
 ];
 
 export default function Perfil() {
@@ -52,11 +63,17 @@ export default function Perfil() {
 
         <Text style={styles.secao}>Configurações</Text>
         {opcoes.map((o) => (
-          <View key={o.texto} style={styles.linha}>
+          <Pressable
+            key={o.texto}
+            style={styles.linha}
+            onPress={() => {
+              if (o.rota) router.push(o.rota);
+            }}
+          >
             <Ionicons name={o.icone} size={22} color={cores.texto} />
             <Text style={styles.linhaTexto}>{o.texto}</Text>
             <Ionicons name="chevron-forward" size={18} color={cores.textoSecundario} />
-          </View>
+          </Pressable>
         ))}
 
         <Pressable style={styles.sair} onPress={sair}>
