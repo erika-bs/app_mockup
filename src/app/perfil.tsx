@@ -16,11 +16,11 @@ type Opcao = {
     | 'notifications-outline'
     | 'lock-closed-outline'
     | 'help-circle-outline';
-  rota?: '/ajuda';
+  rota?: '/conta' | '/ajuda';
 };
 
 const opcoes: Opcao[] = [
-  { texto: 'Conta', icone: 'person-outline' },
+  { texto: 'Conta', icone: 'person-outline', rota: '/conta' },
   { texto: 'Qualidade do áudio', icone: 'musical-note-outline' },
   { texto: 'Notificações', icone: 'notifications-outline' },
   { texto: 'Privacidade', icone: 'lock-closed-outline' },
