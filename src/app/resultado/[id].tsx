@@ -82,10 +82,19 @@ export default function ResultadoBuscaTela() {
 
       <Text style={styles.detalhe}>{resultado.primaryGenreName} · {new Date(resultado.releaseDate).getFullYear()}</Text>
 
-      <TouchableOpacity style={styles.botaoSalvar} onPress={alternarSalvar}>
-        <Ionicons name={salva ? 'heart' : 'heart-outline'} size={20} color={salva ? '#1DB954' : '#fff'} />
-        <Text style={styles.textoSalvar}>{salva ? 'Salvo em Descobertas' : 'Salvar em Descobertas'}</Text>
-      </TouchableOpacity>
+      <View style={styles.linhaBotoes}>
+        <TouchableOpacity
+          style={styles.botaoTocar}
+          onPress={() => router.push(`/player?id=${resultado.trackId}`)}
+        >
+          <Ionicons name="play" size={22} color="#000" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.botaoSalvar} onPress={alternarSalvar}>
+          <Ionicons name={salva ? 'heart' : 'heart-outline'} size={20} color={salva ? '#1DB954' : '#fff'} />
+          <Text style={styles.textoSalvar}>{salva ? 'Salvo em Descobertas' : 'Salvar em Descobertas'}</Text>
+        </TouchableOpacity>
+      </View>
 
       {resultado.trackViewUrl && (
         <TouchableOpacity onPress={() => Linking.openURL(resultado.trackViewUrl)}>
@@ -105,10 +114,15 @@ const styles = StyleSheet.create({
   artista: { color: '#B3B3B3', fontSize: 15, marginTop: 4 },
   detalhe: { color: '#B3B3B3', fontSize: 13, marginTop: 2 },
   linkAlbum: { color: '#1DB954', textDecorationLine: 'underline' },
+  linhaBotoes: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 24 },
+  botaoTocar: {
+    width: 48, height: 48, borderRadius: 24,
+    backgroundColor: '#1DB954', alignItems: 'center', justifyContent: 'center',
+  },
   botaoSalvar: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
     backgroundColor: '#242424', paddingHorizontal: 20, paddingVertical: 10,
-    borderRadius: 24, marginTop: 24,
+    borderRadius: 24,
   },
   textoSalvar: { color: '#fff', fontWeight: '600' },
   link: { color: '#1DB954', marginTop: 16, fontSize: 13 },

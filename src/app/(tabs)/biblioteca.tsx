@@ -89,13 +89,13 @@ export default function Biblioteca() {
         </View>
 
         {filtro === 'Playlists' && (
-          <Pressable style={styles.linha} onPress={() => router.push('/curtidas')}>
+          <Pressable style={styles.linha} onPress={() => router.push('/historico')}>
             <View style={[styles.capa, styles.curtidas]}>
-              <Ionicons name="heart" size={28} color={cores.texto} />
+              <Ionicons name="time" size={28} color={cores.texto} />
             </View>
             <View style={styles.textos}>
-              <Text style={styles.nome}>Músicas Curtidas</Text>
-              <Text style={styles.sub}>Playlist • 5 músicas</Text>
+              <Text style={styles.nome}>Histórico de Reprodução</Text>
+              <Text style={styles.sub}>Músicas que você já tocou</Text>
             </View>
           </Pressable>
         )}
