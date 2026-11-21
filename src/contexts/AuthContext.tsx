@@ -16,6 +16,7 @@ type AuthValor = {
   entrar: (email: string, senha: string) => Promise<boolean>;
   sair: () => Promise<void>;
   apagarConta: () => Promise<void>;
+  atualizarNome: (nome: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthValor | null>(null);
@@ -80,9 +81,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTemConta(false);
   }
 
+  async function atualizarNome(nome: string) {
+    const nomeLimpo = nome.trim();
+    await credenciais.salvar(CHAVE_NOME, nomeLimpo);
+    setUsuario((atual) => (atual ? { ...atual, nome: nomeLimpo } : atual));
+  }
+
   return (
     <AuthContext.Provider
-      value={{ usuario, carregando, temConta, cadastrar, entrar, sair, apagarConta }}
+      value={{ usuario, carregando, temConta, cadastrar, entrar, sair, apagarConta, atualizarNome }}
     >
       {children}
     </AuthContext.Provider>
