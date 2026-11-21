@@ -232,16 +232,16 @@ export default function Player() {
 }
 
 const styles = StyleSheet.create({
-  tela: { flex: 1, backgroundColor: '#2A1B3D' },
+  tela: { flex: 1, backgroundColor: cores.fundo },
   centro: { alignItems: 'center', justifyContent: 'center', gap: 12 },
   conteudo: { flex: 1, width: '100%', maxWidth: 480, alignSelf: 'center', paddingHorizontal: 24 },
   topo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
   topoTexto: { flex: 1, color: cores.texto, fontSize: 13, fontWeight: '600', textAlign: 'center', marginHorizontal: 12 },
-  capa: { alignSelf: 'center', borderRadius: 8, marginTop: 24, backgroundColor: '#3A2A4D' },
+  capa: { alignSelf: 'center', borderRadius: 8, marginTop: 24, backgroundColor: cores.card },
   info: { flexDirection: 'row', alignItems: 'center', marginTop: 28 },
   titulo: { color: cores.texto, fontSize: 24, fontWeight: '800' },
   artista: { color: cores.textoSecundario, fontSize: 16, marginTop: 4 },
-  trilha: { height: 4, backgroundColor: '#5A4A6A', borderRadius: 2, marginTop: 24 },
+  trilha: { height: 4, backgroundColor: '#535353', borderRadius: 2, marginTop: 24 },
   progresso: { height: 4, backgroundColor: cores.texto, borderRadius: 2 },
   tempos: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
   tempo: { color: cores.textoSecundario, fontSize: 12 },
