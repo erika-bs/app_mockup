@@ -19,21 +19,21 @@ export default function TabsLayout() {
           name="index"
           options={{
             title: 'Início',
-            tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} />,
+            tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color as string} size={size} />,
           }}
         />
         <Tabs.Screen
           name="buscar"
           options={{
             title: 'Buscar',
-            tabBarIcon: ({ color, size }) => <Ionicons name="search" color={color} size={size} />,
+            tabBarIcon: ({ color, size }) => <Ionicons name="search" color={color as string} size={size} />,
           }}
         />
         <Tabs.Screen
           name="biblioteca"
           options={{
             title: 'Sua Biblioteca',
-            tabBarIcon: ({ color, size }) => <Ionicons name="library" color={color} size={size} />,
+            tabBarIcon: ({ color, size }) => <Ionicons name="library" color={color as string} size={size} />,
           }}
         />
       </Tabs>

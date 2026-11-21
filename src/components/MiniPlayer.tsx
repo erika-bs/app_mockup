@@ -1,23 +1,22 @@
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 import { cores } from '@/constants/cores';
 import { ultimaReproducao, RegistroHistorico } from '@/storage/historico';
 
 export default function MiniPlayer() {
   const router = useRouter();
+  const pathname = usePathname();
   const insets = useSafeAreaInsets();
   const [ultima, setUltima] = useState<RegistroHistorico | null>(null);
 
-  useFocusEffect(
-    useCallback(() => {
-      ultimaReproducao().then(setUltima);
-    }, [])
-  );
+  useEffect(() => {
+    ultimaReproducao().then(setUltima);
+  }, [pathname]);
 
-  if (!ultima) return null;
+  if (!ultima || pathname.startsWith('/player')) return null;
 
   return (
     <Pressable
