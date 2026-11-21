@@ -11,7 +11,7 @@ const perguntas = [
   },
   {
     pergunta: 'Como salvo uma música?',
-    resposta: 'Abra a música e toque no coração. Ela vai para a aba Descobertas, na Sua Biblioteca.',
+    resposta: 'Abra a música e toque no coração. Ela vai para a aba Favoritos, na Sua Biblioteca.',
   },
   {
     pergunta: 'Por que a música toca só 30 segundos?',

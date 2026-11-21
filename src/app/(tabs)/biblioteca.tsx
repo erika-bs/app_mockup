@@ -11,7 +11,7 @@ import { comCache } from '@/services/cache';
 import { listarDescobertas } from '@/storage/descobertas';
 import { ResultadoBusca } from '@/types/api';
 
-const filtros = ['Playlists', 'Artistas', 'Descobertas'] as const;
+const filtros = ['Playlists', 'Artistas', 'Favoritos'] as const;
 
 type ArtistaReal = { artistId: number; nome: string; foto: string | null };
 
@@ -137,16 +137,16 @@ export default function Biblioteca() {
             </Pressable>
           ))}
 
-        {filtro === 'Descobertas' && !carregandoDescobertas && descobertas.length === 0 && (
+        {filtro === 'Favoritos' && !carregandoDescobertas && descobertas.length === 0 && (
           <View style={styles.vazio}>
-            <Ionicons name="compass-outline" size={40} color={cores.textoSecundario} />
+            <Ionicons name="heart-outline" size={40} color={cores.textoSecundario} />
             <Text style={styles.vazioTexto}>
               Nada salvo ainda. Busque músicas na aba Buscar e toque no coração pra salvar aqui.
             </Text>
           </View>
         )}
 
-        {filtro === 'Descobertas' &&
+        {filtro === 'Favoritos' &&
           descobertas.map((item) => (
             <Pressable
               key={item.trackId}

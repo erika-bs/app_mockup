@@ -92,7 +92,7 @@ export default function ResultadoBuscaTela() {
 
         <TouchableOpacity style={styles.botaoSalvar} onPress={alternarSalvar}>
           <Ionicons name={salva ? 'heart' : 'heart-outline'} size={20} color={salva ? '#1DB954' : '#fff'} />
-          <Text style={styles.textoSalvar}>{salva ? 'Salvo em Descobertas' : 'Salvar em Descobertas'}</Text>
+          <Text style={styles.textoSalvar}>{salva ? 'Salvo em Favoritos' : 'Salvar em Favoritos'}</Text>
         </TouchableOpacity>
       </View>
 
