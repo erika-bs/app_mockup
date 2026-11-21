@@ -10,6 +10,7 @@ export type ResultadoBusca = {
   releaseDate: string;
   trackTimeMillis: number;
   trackViewUrl: string;
+  previewUrl?: string;
 };
 
 export type RespostaBusca = {
