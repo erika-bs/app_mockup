@@ -1,24 +1,33 @@
+import { useCallback, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { cores } from '@/constants/cores';
-import { musicas } from '@/data/musicas';
+import { ultimaReproducao, RegistroHistorico } from '@/storage/historico';
 
 export default function MiniPlayer() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const musica = musicas[0];
+  const [ultima, setUltima] = useState<RegistroHistorico | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      ultimaReproducao().then(setUltima);
+    }, [])
+  );
+
+  if (!ultima) return null;
 
   return (
     <Pressable
       style={[styles.container, { bottom: 60 + insets.bottom }]}
-      onPress={() => router.push({ pathname: '/player', params: { id: musica.id } })}
+      onPress={() => router.push({ pathname: '/player', params: { id: String(ultima.trackId) } })}
     >
-      <Image source={musica.capa} style={styles.capa} />
+      <Image source={{ uri: ultima.artworkUrl100 }} style={styles.capa} />
       <View style={styles.textos}>
-        <Text style={styles.titulo} numberOfLines={1}>{musica.titulo}</Text>
-        <Text style={styles.artista} numberOfLines={1}>{musica.artista}</Text>
+        <Text style={styles.titulo} numberOfLines={1}>{ultima.trackName}</Text>
+        <Text style={styles.artista} numberOfLines={1}>{ultima.artistName}</Text>
       </View>
       <Ionicons name="play" size={24} color={cores.texto} />
     </Pressable>
