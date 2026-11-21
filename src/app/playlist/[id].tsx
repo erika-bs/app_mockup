@@ -61,7 +61,7 @@ export default function PlaylistScreen() {
           <View style={[styles.capa, { backgroundColor: cores.card }]} />
         )}
         <Text style={styles.nome}>{colecao.titulo}</Text>
-        <Text style={styles.descricao}>Playlist gerada a partir da busca "{colecao.termoBusca}" na API</Text>
+        <Text style={styles.descricao}>Músicas de "{colecao.termoBusca}"</Text>
 
         <View style={styles.acoes}>
           <Ionicons name="heart-outline" size={28} color={cores.textoSecundario} />

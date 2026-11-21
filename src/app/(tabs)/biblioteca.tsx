@@ -108,7 +108,7 @@ export default function Biblioteca() {
               </View>
               <View style={styles.textos}>
                 <Text style={styles.nome}>{c.titulo}</Text>
-                <Text style={styles.sub}>Playlist • API ({c.termoBusca})</Text>
+                <Text style={styles.sub}>Playlist({c.termoBusca})</Text>
               </View>
             </Pressable>
           ))}

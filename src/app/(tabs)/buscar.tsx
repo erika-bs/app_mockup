@@ -108,7 +108,7 @@ export default function Buscar() {
       {estado === 'ocioso' && (
         <View style={styles.estadoVazio}>
           <Ionicons name="musical-notes-outline" size={48} color="#535353" />
-          <Text style={styles.textoEstado}>Digite para buscar músicas na API</Text>
+          <Text style={styles.textoEstado}>Busque por músicas, artistas ou álbuns</Text>
         </View>
       )}
 
