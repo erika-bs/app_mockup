@@ -17,6 +17,7 @@ export default function AlbumScreen() {
   const [erro, setErro] = useState(false);
   const [nomeAlbum, setNomeAlbum] = useState('');
   const [nomeArtista, setNomeArtista] = useState('');
+  const [artistId, setArtistId] = useState<number | null>(null);
   const [capa, setCapa] = useState<string | null>(null);
   const [faixas, setFaixas] = useState<ResultadoBusca[]>([]);
 
@@ -38,6 +39,7 @@ export default function AlbumScreen() {
       setFaixas(faixasReais);
       setNomeAlbum(faixasReais[0]?.collectionName ?? '');
       setNomeArtista(faixasReais[0]?.artistName ?? '');
+      setArtistId(faixasReais[0]?.artistId ?? null);
       setCapa(faixasReais[0]?.artworkUrl100 ?? null);
     } catch (e) {
       setErro(true);
@@ -75,7 +77,14 @@ export default function AlbumScreen() {
           <View style={[styles.capa, { backgroundColor: cores.card }]} />
         )}
         <Text style={styles.nome}>{nomeAlbum}</Text>
-        <Text style={styles.artista}>{nomeArtista}</Text>
+
+        <Pressable
+          disabled={artistId === null}
+          onPress={() => artistId !== null && router.push(`/artista/${artistId}`)}
+        >
+          <Text style={styles.artista}>{nomeArtista}</Text>
+        </Pressable>
+
         <Text style={styles.sub}>
           Álbum • {faixas.length} {faixas.length === 1 ? 'faixa' : 'faixas'}
         </Text>
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
   conteudo: { width: '100%', maxWidth: 480, alignSelf: 'center', padding: 16, paddingBottom: 60 },
   capa: { width: 220, height: 220, alignSelf: 'center', borderRadius: 6, marginVertical: 16 },
   nome: { color: cores.texto, fontSize: 24, fontWeight: '800' },
-  artista: { color: cores.texto, fontSize: 16, marginTop: 4 },
+  artista: { color: cores.verde, fontSize: 16, marginTop: 4, textDecorationLine: 'underline' },
   sub: { color: cores.textoSecundario, marginTop: 4 },
   lista: { marginTop: 16 },
   erro: { color: cores.texto, textAlign: 'center', marginTop: 40 },
