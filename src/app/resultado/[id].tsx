@@ -74,7 +74,10 @@ export default function ResultadoBuscaTela() {
       <Image source={{ uri: resultado.artworkUrl100.replace('100x100', '400x400') }} style={styles.capa} />
 
       <Text style={styles.nome}>{resultado.trackName}</Text>
-      <Text style={styles.artista}>{resultado.artistName}</Text>
+
+      <TouchableOpacity onPress={() => router.push(`/artista/${resultado.artistId}`)}>
+        <Text style={styles.artista}>{resultado.artistName}</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push(`/album/${resultado.collectionId}`)}>
         <Text style={[styles.detalhe, styles.linkAlbum]}>{resultado.collectionName}</Text>
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
   voltar: { alignSelf: 'flex-start', marginBottom: 12 },
   capa: { width: 220, height: 220, borderRadius: 8, backgroundColor: '#242424', marginBottom: 20 },
   nome: { color: '#fff', fontSize: 20, fontWeight: '700', textAlign: 'center' },
-  artista: { color: '#B3B3B3', fontSize: 15, marginTop: 4 },
+  artista: { color: '#1DB954', fontSize: 15, marginTop: 4, textDecorationLine: 'underline' },
   detalhe: { color: '#B3B3B3', fontSize: 13, marginTop: 2 },
   linkAlbum: { color: '#1DB954', textDecorationLine: 'underline' },
   linhaBotoes: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 24 },
