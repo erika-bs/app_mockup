@@ -16,6 +16,10 @@ export default function Login() {
 
   async function aoEntrar() {
     setErro('');
+    if (email.trim() === '' || senha === '') {
+      setErro('Preencha o e-mail e a senha.');
+      return;
+    }
     if (!temConta) {
       setErro('Nenhuma conta encontrada. Crie uma conta para entrar.');
       return;
